@@ -1,6 +1,6 @@
 # 02 TECH SPEC
 
-Version 1.0 | 2026-11-06 | Owner: Chat 00
+Version 1.1 | 2026-11-06 | Owner: Chat 00
 Game rules are in `01`. Numbers are in `03`. This file says **how** we build it.
 
 ---
@@ -61,6 +61,7 @@ tidebound/
 1. **Model / view split.** Game logic lives in plain classes (`extends RefCounted`) with **no scene or node calls**. Scenes only show state and send input. This makes logic testable.
 2. **Autoloads (singletons), only these:** `Clock`, `EventBus`, `Data`, `Save`, `Game`, `Tide`, `Debug`.
    - `Game` holds the live `GameState` and the systems.
+   - `Log` is **not** an autoload. It is a static helper class (`class_name Log`, `scripts/core/Log.gd`). See D-011.
 3. **Event bus.** Systems talk through signals on `EventBus`. No system calls into another system's internals. Signal names are past tense: `building_placed`, `tide_phase_changed`, `order_delivered`.
 4. **Time model.** No per-building `Timer` or `_process` countdowns. Every timed thing stores a **unix timestamp** (`ready_at`, `last_collect_at`). One 1 Hz tick in `Game` checks what is due. This makes offline progress easy and cheap.
 5. **Data-driven.** All costs, times, stats are read from `data/*.json` through `Data`. No magic numbers in code. Global constants come from `data/tuning.json`.
