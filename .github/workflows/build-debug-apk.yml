@@ -1,0 +1,52 @@
+name: Build debug APK
+
+# Every push to any branch, plus a manual "Run workflow" button.
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.7.1"
+  EXPORT_NAME: tidebound
+
+jobs:
+  export-android-debug:
+    name: Export Android debug APK
+    runs-on: ubuntu-22.04
+    container:
+      image: barichello/godot-ci:4.7.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # UNSURE: GitHub may use a different home folder than /root inside the
+      # container. If so, copy the Godot templates and config to the new home.
+      # Written from memory, not from the official GitHub workflow. Fix from the error text.
+      - name: Set up Godot home
+        run: |
+          echo "HOME is $HOME"
+          if [ "$HOME" != "/root" ]; then
+            mkdir -v -p ~/.local/share/godot/export_templates/
+            mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+            if [ -d /root/.config/godot ]; then
+              mkdir -v -p ~/.config/godot
+              cp -r /root/.config/godot/. ~/.config/godot/
+            fi
+          fi
+
+      # Builds Godot's import cache. The official template does this before export.
+      - name: Import assets
+        run: godot --headless --verbose --editor --quit
+
+      # The name "Android" must match the preset name in export_presets.cfg.
+      - name: Export debug APK
+        run: |
+          mkdir -v -p build/android
+          godot --headless --verbose --export-debug "Android" build/android/${EXPORT_NAME}-debug.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: tidebound-debug-apk
+          path: build/android/*.apk
+          if-no-files-found: error
