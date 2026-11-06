@@ -11,8 +11,19 @@ config_version=5
 [application]
 
 config/name="Tidebound"
+run/main_scene="uid://cbomrrugvbdyo"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Clock="*uid://ctatemybvsnnj"
+EventBus="*uid://ccwnnpbmkhg4l"
+Data="*uid://b8u3qnc5j7v0y"
+Save="*uid://d1jd7lj5h331a"
+Tide="*uid://xhasv7vkgjvc"
+Game="*uid://b6xchgd8k35qy"
+Debug="*uid://drw74q7yf0wik"
 
 [display]
 
