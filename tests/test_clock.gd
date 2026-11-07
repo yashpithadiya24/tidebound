@@ -2,9 +2,12 @@ extends GutTest
 ## Tests for the Clock autoload.
 
 
-func after_each() -> void:
-	Clock.debug_offset = 0
+func before_each() -> void:
+	Clock.reset_debug()
 
+
+func after_each() -> void:
+	Clock.reset_debug()
 
 func test_now_is_close_to_system_time() -> void:
 	var system_now: int = int(Time.get_unix_time_from_system())
