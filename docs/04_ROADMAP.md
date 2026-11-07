@@ -1,6 +1,6 @@
 # 04 ROADMAP
 
-Version 1.1s | 2026-11-06 | Owner: Chat 00
+Version 1.1 | 2026-11-06 | Owner: Chat 00
 One chat = one block below. Do the chats **in order**. Do not start the next chat until "Done when" is true and `STATE.md` is updated.
 Time guesses are rough. Total about 6 to 7 months if you work most days. Learning and bug time can stretch it.
 

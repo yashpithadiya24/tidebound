@@ -56,7 +56,7 @@ Numbers are in `03_DATA_STARTER.md`. Formulas are in `02_TECH_SPEC.md`. Rule IDs
 | LAND | 4 | always | never | Main building area |
 
 - **R-TILE-1:** Walkable = dry. Boat passable = underwater AND water index >= elevation + boat draft.
-- **R-TILE-2:** Draft 2 boats need one more index step than draft 1 boats (DEEP and SEABED still work at LOW).
+- **R-TILE-2:** Draft 2 boats need one more index step than draft 1 boats. DEEP works at LOW. SEABED needs index 2 or more.
 
 ---
 

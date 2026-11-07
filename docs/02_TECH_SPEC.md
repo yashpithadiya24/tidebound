@@ -1,6 +1,6 @@
 # 02 TECH SPEC
 
-Version 1.2 | 2026-11-06 | Owner: Chat 00
+Version 1.3 | 2026-11-06 | Owner: Chat 00
 Game rules are in `01`. Numbers are in `03`. This file says **how** we build it.
 
 ---
@@ -81,7 +81,7 @@ Clock.now() -> int      # unix seconds UTC
 - `Clock.now()` = system unix time + `debug_offset` (offset works **only in debug builds**).
 - **Backward guard:** `Save` stores `last_seen_at`. If `now < last_seen_at`, use `last_seen_at` as now and keep it until real time catches up.
 - **Offline cap:** progress after load counts at most 48 h (`tuning.offline_cap_s`).
-- Debug panel must have: +1 h, +1.5 h (next phase), +6 h, reset offset, set event override. **Time travel is how we test tides.**
+- Debug panel must have: +1 h, Next phase (jumps to the exact next phase boundary), +6 h, reset offset (also clears the backward guard), set event override (none, spring, super low). **Time travel is how we test tides.**
 
 ---
 
