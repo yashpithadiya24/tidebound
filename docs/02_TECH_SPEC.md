@@ -1,6 +1,6 @@
 # 02 TECH SPEC
 
-Version 1.1 | 2026-11-06 | Owner: Chat 00
+Version 1.2 | 2026-11-06 | Owner: Chat 00
 Game rules are in `01`. Numbers are in `03`. This file says **how** we build it.
 
 ---
@@ -12,6 +12,7 @@ Game rules are in `01`. Numbers are in `03`. This file says **how** we build it.
 | Engine | Godot 4.3 or newer (lock the exact version in `STATE.md` during C01) |
 | Language | GDScript with static typing |
 | Renderer | **Compatibility** (best reach on cheap Android phones). Revisit only if a needed effect fails. |
+| Textures | Project Setting **Import ETC2 ASTC** must be ON. Android export fails without it (D-015). |
 | Display | Portrait, base size 1080 x 1920, stretch mode `canvas_items`, aspect `expand` |
 | Tiles | `TileMapLayer` (not the old `TileMap`). Tile size 64 x 64 px. |
 | Tests | GUT 9.x (Godot Unit Test) |
@@ -19,7 +20,7 @@ Game rules are in `01`. Numbers are in `03`. This file says **how** we build it.
 | Build | GitHub Actions exports a debug APK (use a community Godot CI image, verify the current one in C01) |
 | Cloud dev | GitHub Codespaces for scripts, docs, lint. Godot editor stays on the local laptop. |
 | Min Android | API 24 (Android 7). Target latest required by Google Play (check in C18). |
-| Package id | `com.<yourname>.tidebound` (set in C01) |
+| Package id | `com.yash.tidebound` (set in C01, D-013) |
 
 ---
 
@@ -248,7 +249,7 @@ Sample (shortened):
 - GUT tests for all pure logic: tide, passability, placement, production math, offline progress, trip time, orders, modifiers, save and migration.
 - Every task in `04_ROADMAP.md` has a "done when" check. Logic tasks need a GUT test first or together with the code.
 - Manual test list per milestone is kept in `STATE.md`.
-- Run tests: `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests` (the exact command is confirmed in C01 and written to `STATE.md`).
+- Run tests: `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit` (confirmed in C01, D-018).
 
 ---
 
@@ -270,6 +271,6 @@ Sample (shortened):
 
 ## 16. Build and release
 
-- Debug APK on every push to a feature branch (artifact download).
+- Debug APK on every push to any branch, plus a manual "Run workflow" button (artifact download). See D-014.
 - Release (C18): signed AAB, keystore in GitHub Secrets, versionCode increments automatically.
 - Version format: `0.<milestone>.<chat>` during development (example `0.1.05`).

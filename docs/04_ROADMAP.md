@@ -1,6 +1,6 @@
 # 04 ROADMAP
 
-Version 1.0 | 2026-11-06 | Owner: Chat 00
+Version 1.1s | 2026-11-06 | Owner: Chat 00
 One chat = one block below. Do the chats **in order**. Do not start the next chat until "Done when" is true and `STATE.md` is updated.
 Time guesses are rough. Total about 6 to 7 months if you work most days. Learning and bug time can stretch it.
 
@@ -44,6 +44,7 @@ Format below: **Goal / Read / Tasks / Done when / Out of scope.** Spec sections 
   5. GitHub Actions: export debug APK as a downloadable artifact.
   6. Install APK on your phone.
   7. Copy `tools/repo_map.py` and run it once.
+  8. Add a boot screen (`scenes/main/Main.tscn`, `scripts/core/Main.gd`) that shows "Tidebound" and the live `Clock.now()` number.
 - **Done when:** The phone shows a screen with the text "Tidebound" and the live `Clock.now()` number. Tests run from the command line. `STATE.md` lists Godot version, test command, APK steps.
 - **Out of scope:** Any gameplay.
 
