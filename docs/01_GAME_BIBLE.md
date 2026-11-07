@@ -1,6 +1,6 @@
 # 01 GAME BIBLE
 
-Version 1.0 | 2026-11-06 | Owner: Chat 00
+Version 1.1 | 2026-11-07 | Owner: Chat 00
 Numbers are in `03_DATA_STARTER.md`. Formulas are in `02_TECH_SPEC.md`. Rule IDs (like R-TIDE-1) can be quoted in chats.
 
 ---

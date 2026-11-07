@@ -2,7 +2,7 @@
 
 Update this file at the end of **every** chat. It is the first thing every new chat reads after `00`.
 
-**Last updated:** 2026-11-06 | **By chat:** C01 (Setup and CI)
+**Last updated:** 2026-11-07 | **By chat:** C02 (Time and tide core)
 
 ---
 
@@ -11,8 +11,8 @@ Update this file at the end of **every** chat. It is the first thing every new c
 | Item | Version |
 |---|---|
 | 00_START_HERE | 1.0 |
-| 01_GAME_BIBLE | 1.0 |
-| 02_TECH_SPEC | 1.2 |
+| 01_GAME_BIBLE | 1.1 |
+| 02_TECH_SPEC | 1.3 |
 | 03_DATA_STARTER | 1.0 |
 | 04_ROADMAP | 1.1 |
 | 05_AI_RULES | 1.0 |
@@ -28,8 +28,8 @@ Update this file at the end of **every** chat. It is the first thing every new c
 ## 2. Current position
 
 - **Milestone:** M1 Tide Town
-- **Current chat:** none active (C01 finished)
-- **Phase note:** Setup is done. A debug APK builds in the cloud and runs on the phone. C02 (Time and tide core) is next.
+- **Current chat:** none active (C02 finished)
+- **Phase note:** Tide math, tide signal, and time travel debug overlay work on laptop and on the phone. 38 of 38 tests pass. C03 (Grid and island view) is next.
 
 ## 3. DONE (with task ids)
 
@@ -42,17 +42,24 @@ Update this file at the end of **every** chat. It is the first thing every new c
 - C01.6: APK installed and checked on a Realme 9 Pro 5G (Android 14).
 - C01.7: `tools/repo_map.py` run on the new tree (output not committed).
 - C01.8: Boot screen `Main.tscn` + `Main.gd` shows "Tidebound" and live `Clock.now()` (added to C01 by D-017).
+- C02.1: `data/tuning.json` created from 03 section 2. `Data` loads it (`Data.tuning`, `load_json_dict()`, `tuning_int()`). Bad or missing file gives an empty Dictionary and a warning. Export filter now includes `*.json` (D-022).
+- C02.2: `Clock` backward guard. `last_seen_at` is kept in memory (D-021). New `set_last_seen_at()` and `reset_debug()` (clears offset and guard).
+- C02.3: `TideModel` (pure `RefCounted`, `class_name TideModel`). Has phase_index, phase_name, base_index, water_index (with event), next_change, cycle_start, visual_level, is_underwater, is_dry, can_boat_pass, active_seconds. Numbers come from `Data.tuning`.
+- C02.4: `Tide` autoload with its own 1 s Timer (D-023). `Tide.event_override` (none, spring, super_low). `EventBus.tide_phase_changed(phase: String, index: int)`.
+- C02.5: Tests for all golden tables in 02 section 5, SEABED draft 2 (D-019), DEEP draft 2 at super low (D-024), events, `active_seconds`.
+- C02.6: Debug overlay in `DebugPanel.gd` (built in code, debug builds only). Top strip shows phase, index, countdown. Tap to open: +1 h, Next phase, +6 h, Reset, No event, Spring, Super low.
 
 ## 4. IN PROGRESS
 
-- Merge branch `c01-setup` into `main` (user action, see handoff checklist).
+- Merge branch `c02-tide-core` into `main` (user action, see handoff checklist).
 
 ## 5. NEXT CHAT
 
-- **Chat ID:** C02 Time and tide core
-- **First task:** C02.1 `Data` loads `tuning.json`. Note: `data/` is empty now, so `data/tuning.json` must be created from `03` section 2 in this task.
-- **Attach:** `00`, `STATE.md`, `05`, C02 block from `04`, `01` (section 3), `02` (sections 4 and 5), `03` (section 2), `repo_map.txt`, and the code files `scripts/core/Clock.gd`, `scripts/core/Data.gd`, `scripts/core/Log.gd`, `scripts/tide/Tide.gd`, `scripts/debug/DebugPanel.gd`
-- **Boot line:** `Chat ID: C02 - Time and tide core`
+- **Chat ID:** C03 Grid and island view
+- **First task:** C03.1 `IslandData` loads the ASCII map and `GridModel` stores elevation. Note: `data/tiles.json` and `data/islands/home_isle.json` do not exist yet. Create them in this task from `03` section 3 and section 12.
+- **Attach:** `00`, `STATE.md`, `05`, C03 block from `04`, `01` (section 3, tile table), `02` (section 6), `03` (sections 3 and 12), new `repo_map.txt`, and these code files: `scripts/core/Data.gd`, `scripts/core/EventBus.gd`, `scripts/core/Main.gd`, `scenes/main/Main.tscn`, `scripts/tide/Tide.gd`, `scripts/tide/TideModel.gd`, `project.godot`
+- **Boot line:** `Chat ID: C03 - Grid and island view`
+- **Repo map command:** `python tools/repo_map.py > repo_map.txt` then `python tools/repo_map.py --full scripts/core/Data.gd scripts/core/EventBus.gd scripts/core/Main.gd scripts/tide/Tide.gd scripts/tide/TideModel.gd > code_context.txt`
 
 ## 6. DECISIONS (append-only, newest at the bottom)
 
@@ -76,6 +83,12 @@ Update this file at the end of **every** chat. It is the first thing every new c
 | D-016 | 2026-11-06 | The autoload named `Debug` uses `scripts/debug/DebugPanel.gd`. No new file. | Matches 02 section 2 exactly. No doc edit needed. | 02 (none), project.godot | - |
 | D-017 | 2026-11-06 | C01 includes a boot screen task (`scenes/main/Main.tscn`, `scripts/core/Main.gd`). | C01 "Done when" needs a screen with the live clock, but no task made one. | 04 | - |
 | D-018 | 2026-11-06 | Test command is `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit`. | Confirmed on Godot 4.7.1 with GUT 9.7.1. `-gexit` closes Godot after the tests. | 02 | - |
+| D-019 | 2026-11-07 | Fix wording in 01 R-TILE-2: DEEP works at LOW for draft 2 boats. SEABED needs index 2 or more for draft 2. | The formula and tests in 02 section 5 win over the old wording. | 01 | - |
+| D-020 | 2026-11-07 | Debug panel wording in 02 section 4: "Next phase" jumps to the exact next phase boundary. "Reset offset" also clears the backward guard. "Set event override" has 3 values (none, spring, super low). 02 goes to version 1.3. | Matches the C02 build. 02 wins over 04 for the debug buttons. | 02 | - |
+| D-021 | 2026-11-07 | Until C14, `Tide.event_override` is set only by the debug panel. Until C06, `Clock.last_seen_at` is kept in memory only. | `EventSystem` and `Save` do not exist yet. | none (code) | - |
+| D-022 | 2026-11-07 | Android export preset `include_filter` is `*.json`. | Godot may leave `data/*.json` out of the APK. This keeps game data inside the APK. Phone check passed. | export_presets.cfg | - |
+| D-023 | 2026-11-07 | `Tide` has its own 1 s Timer for now. `tide_phase_changed(phase, index)` is also emitted when an event changes the water index inside the same phase. | `Game` has no tick yet. The map must redraw when spring or super low turns on. | scripts/tide/Tide.gd, scripts/core/EventBus.gd | - |
+| D-024 | 2026-11-07 | Keep the 02 section 5 formula as is: a draft 2 boat (Trader) is blocked on DEEP at super low tide (index 0). A test covers it. | User choice. No rule change now. | tests/test_tide_model_rules.gd | - |
 
 ## 7. OPEN QUESTIONS
 
@@ -85,7 +98,10 @@ Update this file at the end of **every** chat. It is the first thing every new c
 | Q-004 | Backend choice for leaderboard (Firebase or Supabase) | C15 | AI + user |
 | Q-005 | Final store name and trademark check | C18 | user |
 | Q-006 | CI log said "Could not find version of build tools that matches Target SDK, using 33.0.2". The build is green. Check the Target SDK and build tools before release. | C18 | AI |
-| Q-007 | Do `Log.warn` and `Log.error` (push_warning, push_error) print in release builds? Not confirmed. | C18 | AI |
+| Q-007 | Do `Log.warn` and `Log.error` (push_warning, push_error) print in release builds? Not confirmed. Also confirm the debug panel does nothing in release. | C18 | AI |
+| Q-008 | Move the Tide 1 s Timer to the `Game` 1 Hz tick (02 section 3) when `Game` gets its tick. | C05 | AI |
+| Q-009 | `TideModel` takes the event as one String for the whole time range. In C14 the event may depend on the date, so this signature may change. | C14 | AI |
+| Q-010 | Trader (draft 2) is blocked on DEEP at super low (D-024). Lane `pebble_coral` is "open all phases" in 03 section 9. Check this in C09 and C14. | C09 | AI + user |
 
 Closed in C01: Q-001 (see D-012), Q-002 (see D-013).
 
@@ -117,7 +133,11 @@ Closed in C01: Q-001 (see D-012), Q-002 (see D-013).
 
 ## 12. TEST NOTES
 
-- **Test command:** `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit` (Godot 4.7.1, GUT 9.7.1). Result at end of C01: 3 of 3 tests pass (`test_smoke` 1, `test_clock` 2).
+- **Test command:** `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit` (Godot 4.7.1, GUT 9.7.1).
+- **After adding a new `class_name` file, run this first:** `godot --headless --editor --quit` (rebuilds the class list). Without it GUT can skip a test file that uses the new class.
+- **Result at end of C02:** 38 of 38 tests pass. `test_smoke` 1, `test_clock` 2, `test_clock_guard` 5, `test_data` 4, `test_tide` 6, `test_tide_model` 6, `test_tide_model_rules` 14.
+- **Expected yellow warnings:** 2 lines from `test_data` (missing file, bad JSON). They are on purpose. No red errors should show.
+- **Time travel in tests:** use `Clock.debug_offset` and `Tide.refresh()`. Reset with `Clock.reset_debug()` in `before_each` and `after_each`.
 - **APK build steps:**
   1. Push to any branch, or run the workflow by hand: GitHub > Actions > "Build debug APK" > Run workflow.
   2. Open the green run. Under Artifacts, download `tidebound-debug-apk` (a zip).
@@ -126,6 +146,8 @@ Closed in C01: Q-001 (see D-012), Q-002 (see D-013).
   - The workflow runs `godot --headless --verbose --editor --quit` (import) before `--export-debug`.
 - **Manual test list for current milestone (M1):**
   - C01 boot screen shows "Tidebound" and a number that goes up every second, on laptop and on Realme 9 Pro 5G (Android 14): PASS.
+  - C02 debug strip at the top shows phase, index, countdown. Tap opens the buttons. +1 h, Next phase, +6 h, Spring, Super low, Reset all work: PASS on laptop and on Realme 9 Pro 5G.
+  - C02 phone countdown matches the laptop (proves `tuning.json` is inside the APK): PASS.
 - **M1 fun test result:** (fill in C07)
 
 ## 13. CHAT LOG (newest at the bottom)
@@ -134,4 +156,4 @@ Closed in C01: Q-001 (see D-012), Q-002 (see D-013).
 |---|---|---|---|
 | 2026-11-06 | C00 | Planning, Core Pack v1.0 | docs/* |
 | 2026-11-06 | C01 | Godot 4.7.1 project, repo skeleton, GUT 9.7.1, 7 autoload stubs, Log, Clock.now, boot screen, CI debug APK (green), APK tested on phone | project.godot, export_presets.cfg, .gitignore, scripts/core/*, scripts/tide/Tide.gd, scripts/debug/DebugPanel.gd, scenes/main/Main.tscn, tests/*, addons/gut/*, .github/workflows/build-debug-apk.yml, docs/02, docs/04, docs/STATE.md |
-
+| 2026-11-07 | C02 | tuning.json and Data loader, Clock backward guard, TideModel with all 02 section 5 formulas, Tide autoload with signal and event override, 38 tests, debug overlay with time travel and event buttons, export filter for json, D-019 to D-024, tested on phone | data/tuning.json, export_presets.cfg, scripts/core/Data.gd, scripts/core/Clock.gd, scripts/core/EventBus.gd, scripts/tide/TideModel.gd, scripts/tide/Tide.gd, scripts/debug/DebugPanel.gd, tests/test_data.gd, tests/test_clock.gd, tests/test_clock_guard.gd, tests/test_tide.gd, tests/test_tide_model.gd, tests/test_tide_model_rules.gd, docs/01, docs/02, docs/04, docs/STATE.md |
