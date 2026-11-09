@@ -1,0 +1,8 @@
+{
+  "DEEP":    {"elevation": -1, "color": "#1d5d9b"},
+  "SEABED":  {"elevation": 0,  "color": "#2b7bb9"},
+  "REEF":    {"elevation": 1,  "color": "#e07a6f"},
+  "MUDFLAT": {"elevation": 2,  "color": "#8a7455"},
+  "SHORE":   {"elevation": 3,  "color": "#e8d9a8"},
+  "LAND":    {"elevation": 4,  "color": "#7cc46a"}
+}

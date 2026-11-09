@@ -1,0 +1,25 @@
+{
+  "id": "home_isle",
+  "width": 16,
+  "height": 16,
+  "legend": {"~": "DEEP", "s": "SEABED", "r": "REEF", "m": "MUDFLAT", "h": "SHORE", "L": "LAND"},
+  "rows": [
+    "~~~~~~~~~~~~~~~~",
+    "~~ssrrrrrrrrss~~",
+    "~srrmmmmmmmmrrs~",
+    "~srmmhhhhhhmmrs~",
+    "~rrmhhLLLLhhmrr~",
+    "~rmmhLLLLLLhmmr~",
+    "~rmhLLLLLLLLhmr~",
+    "~rmhLLLLLLLLhmr~",
+    "~rmhLLLLLLLLhmr~",
+    "~rmhLLLLLLLLhmr~",
+    "~rmmhLLLLLLhmmr~",
+    "~rrmhhLLLLhhmrr~",
+    "~srmmhhhhhhmmrs~",
+    "~srrmmmmmmmmrrs~",
+    "~~ssrrrrrrrrss~~",
+    "~~~~~~~~~~~~~~~~"
+  ],
+  "start_harbor": {"x": 6, "y": 6}
+}

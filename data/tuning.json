@@ -1,4 +1,4 @@
-{
+	{
   "tide_cycle_s": 21600,
   "phase_s": 5400,
   "tide_epoch_unix": 0,
@@ -12,6 +12,10 @@
   "tile_px": 64,
   "camera_zoom_min": 0.6,
   "camera_zoom_max": 1.6,
+  "camera_margin_tiles": 2,
+  "tap_max_move_px": 20,
+  "water_tint_alpha_min": 0.25,
+  "water_tint_alpha_max": 0.55,
   "start_resources": {"coins": 300, "wood": 50, "food": 20, "stone": 0, "gems": 0},
   "order_slots_per_island": 3,
   "order_life_cycles": 2,
