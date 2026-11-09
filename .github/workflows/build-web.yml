@@ -25,7 +25,8 @@ jobs:
           ls -la /root/.local/share/godot/export_templates/
           mkdir -v -p ~/.local/share/godot
           cp -r /root/.local/share/godot/export_templates ~/.local/share/godot/
-          ls -la ~/.local/share/godot/export_templates/      - name: Import project
+          ls -la ~/.local/share/godot/export_templates/      
+      - name: Import project
         run: godot --headless --verbose --editor --quit
       - name: Export web (debug build, keeps the debug strip)
         run: |
