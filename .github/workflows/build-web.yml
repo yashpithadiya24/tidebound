@@ -1,0 +1,51 @@
+name: Build web
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.7.1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up export templates
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      - name: Import project
+        run: godot --headless --verbose --editor --quit
+      - name: Export web (debug build, keeps the debug strip)
+        run: |
+          mkdir -v -p build/web
+          godot --headless --verbose --export-debug "Web" build/web/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tidebound-web
+          path: build/web
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: build/web
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
