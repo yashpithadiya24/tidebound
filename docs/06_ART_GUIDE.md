@@ -1,7 +1,7 @@
 # 06 ART AND AUDIO GUIDE
 
-Version 1.0 | 2026-11-06 | Owner: Chat 00
-Used mainly in C03 (placeholders) and C17 (final art). Keep one style across all assets.
+Version 1.2 | 2026-11-06 | Owner: Chat 00
+Used mainly in C03 (placeholders) and C06 (polish). A full art pass is parked (D-034). Keep one style across all assets.
 
 ---
 
@@ -54,9 +54,9 @@ Lock a final palette of 24 colors in C17 and log it in `STATE.md`.
 | Crew portrait | 256 x 256 |
 | Crew map sprite | 64 x 64 |
 | Icons (resources, tide, UI) | 128 x 128 |
-| App icon | 512 x 512 |
+| Favicon and share image | Favicon 512 x 512, share image 1200 x 630 |
 
-Import settings: PNG, filter linear, mipmaps off for 2D, pack into atlases in C17.
+Import settings: PNG, filter linear, mipmaps off for 2D, pack into atlases in C17. Web: the player downloads all art before play, so keep atlases small and audio short.
 
 ## 5. Naming
 

@@ -10,14 +10,14 @@ Update this file at the end of **every** chat. It is the first thing every new c
 
 | Item | Version |
 |---|---|
-| 00_START_HERE | 1.0 |
-| 01_GAME_BIBLE | 1.1 |
-| 02_TECH_SPEC | 1.3 |
-| 03_DATA_STARTER | 1.0 |
-| 04_ROADMAP | 1.1 |
+| 00_START_HERE | 1.2 |
+| 01_GAME_BIBLE | 1.3 |
+| 02_TECH_SPEC | 1.6 |
+| 03_DATA_STARTER | 1.2 |
+| 04_ROADMAP | 2.0 |
 | 05_AI_RULES | 1.0 |
-| 06_ART_GUIDE | 1.0 |
-| 07_HANDOFF_SYSTEM | 1.0 |
+| 06_ART_GUIDE | 1.2 |
+| 07_HANDOFF_SYSTEM | 1.1 |
 | 08_PROMPTS | 1.0 |
 | Godot | 4.7.1 stable (laptop and CI) |
 | GUT | 9.7.1 |
@@ -55,7 +55,7 @@ Update this file at the end of **every** chat. It is the first thing every new c
 
 ## 5. NEXT CHAT
 
-- **Chat ID:** C03 Grid and island view
+- **Chat ID:** C03 step C03.2 (see part D). After C03: C04.
 - **First task:** C03.1 `IslandData` loads the ASCII map and `GridModel` stores elevation. Note: `data/tiles.json` and `data/islands/home_isle.json` do not exist yet. Create them in this task from `03` section 3 and section 12.
 - **Attach:** `00`, `STATE.md`, `05`, C03 block from `04`, `01` (section 3, tile table), `02` (section 6), `03` (sections 3 and 12), new `repo_map.txt`, and these code files: `scripts/core/Data.gd`, `scripts/core/EventBus.gd`, `scripts/core/Main.gd`, `scenes/main/Main.tscn`, `scripts/tide/Tide.gd`, `scripts/tide/TideModel.gd`, `project.godot`
 - **Boot line:** `Chat ID: C03 - Grid and island view`
@@ -89,19 +89,33 @@ Update this file at the end of **every** chat. It is the first thing every new c
 | D-022 | 2026-11-07 | Android export preset `include_filter` is `*.json`. | Godot may leave `data/*.json` out of the APK. This keeps game data inside the APK. Phone check passed. | export_presets.cfg | - |
 | D-023 | 2026-11-07 | `Tide` has its own 1 s Timer for now. `tide_phase_changed(phase, index)` is also emitted when an event changes the water index inside the same phase. | `Game` has no tick yet. The map must redraw when spring or super low turns on. | scripts/tide/Tide.gd, scripts/core/EventBus.gd | - |
 | D-024 | 2026-11-07 | Keep the 02 section 5 formula as is: a draft 2 boat (Trader) is blocked on DEEP at super low tide (index 0). A test covers it. | User choice. No rule change now. | tests/test_tide_model_rules.gd | - |
+| D-025 | 2026-11-07 | home_isle row 5 is ~rrmhhLLLLhhmrr~ (16 characters). | The old row had 15 characters. A test now checks that every row is 16 wide. | 03 §12, data/islands/home_isle.json | - |
+| D-026 | 2026-11-07 | Harbor Hall starts at (6,6). The save sample in 02 §10 changes from (7,7) to (6,6). | 03 holds the starter data and wins. | 02 §10 | - |
+| D-027 | 2026-11-07 | Dry tiles show their base color. Wet tiles get a blue tint overlay on a second TileMapLayer. Which tiles are wet follows the discrete water index. Only the tint strength follows visual_level. New tuning keys: camera_margin_tiles 2, tap_max_move_px 20, water_tint_alpha_min 0.25, water_tint_alpha_max 0.55. | R-TIDE-8 (smooth for visuals, discrete for logic). No magic numbers in code. | 03 §2, 03 §3, 04 (C03 task 3 wording) | - |
+| D-028 | 2026-11-07 | Main.tscn stays the root scene and loads scenes/island/Island.tscn. The C01 clock text is removed. Main.gd stays in scripts/core/. | Moving it changes the file layout and the scene uid for no gain. Log.gd already lives there, so only the 02 §2 wording changes. | 02 §2, Main.tscn, Main.gd | - |
+| D-029 | 2026-11-07 | (a) New folder scripts/ui/ for scripts that belong to scenes (IslandView, IslandCamera, TideWidget, TileInfoPanel). (b) Island JSON format is in 03 §12 (see DOC EDITS). (c) Project setting emulate_mouse_from_touch is OFF. | (a) 02 §2 has no folder for scene scripts. (b) The file shape was never defined. (c) Otherwise one touch makes two pan events. | 02 §2, 03 §12, project.godot | - |
+|D-030 | 2026-11-07 | Platform is Web (browser, phone and desktop), engine stays Godot 4 (Web export). Android and iOS apps are parked. | Faster to publish, no store steps, easy test links | 00, 01, 02, 04, 05, 06, 08 | D-003 |
+| D-031 | 2026-11-07 | CI builds the Web version on every push. `main` deploys to the test site. The debug APK job is manual only. | A link is always available to test | 02 §16, workflow files | D-014 |
+| D-032 | 2026-11-07 | Browser storage (`user://`) holds the save. C06 adds Export save and Import save (text code) and a Settings warning. | Players can clear site data or use private mode | 02 §10, 04 C06 | - |
+| D-033 | 2026-11-07 | Test site on GitHub Pages. First public release on itch.io. Domain, web payments, ads and web notifications are decided later (C16, C18). | Fastest free path | 04, STATE | - |
+| D-034 | 2026-11-07 | Fast-track web plan. The roadmap shrinks from C01-C18 to C01-C07. Cut: IAP, ad SDKs, push notifications, store listing, signed AAB, leaderboard, share codes, weekly challenge, seasons, events, tech tree, power, workshop recipes, land reclaim, crew active skills, shards, full sea map (see 04 "Parked"). C03 is two steps: C03.1 (data and tests) and C03.2 (web pipeline, island view, camera, tide tint, widget). Web export is single-threaded. The test site gets a debug web build. The public release goes to an online web-game platform (itch.io first, final choice is Q-011). GitHub Pages stays as the test link. `emulate_mouse_from_touch` stays at its default (on). | Publish fast. A web link replaces APK installs. | 00, 01, 02, 03, 04, 06, 07 | D-008 (chat count), D-010, D-029 part (c). D-033 is updated for the platform choice. |
 
 ## 7. OPEN QUESTIONS
 
 | ID | Question | Needed by | Owner |
 |---|---|---|---|
 | Q-003 | Tide epoch shift: should HIGH tide fall in the evening for the main audience? | C07 | user |
-| Q-004 | Backend choice for leaderboard (Firebase or Supabase) | C15 | AI + user |
-| Q-005 | Final store name and trademark check | C18 | user |
-| Q-006 | CI log said "Could not find version of build tools that matches Target SDK, using 33.0.2". The build is green. Check the Target SDK and build tools before release. | C18 | AI |
-| Q-007 | Do `Log.warn` and `Log.error` (push_warning, push_error) print in release builds? Not confirmed. Also confirm the debug panel does nothing in release. | C18 | AI |
-| Q-008 | Move the Tide 1 s Timer to the `Game` 1 Hz tick (02 section 3) when `Game` gets its tick. | C05 | AI |
-| Q-009 | `TideModel` takes the event as one String for the whole time range. In C14 the event may depend on the date, so this signature may change. | C14 | AI |
-| Q-010 | Trader (draft 2) is blocked on DEEP at super low (D-024). Lane `pebble_coral` is "open all phases" in 03 section 9. Check this in C09 and C14. | C09 | AI + user |
+| Q-004 | parked (leaderboard cut)
+| Q-005 | needed by C07
+| Q-006 | parked (Android)
+| Q-007 | needed by C07
+| Q-009 | parked (events cut)
+| Q-010 | needed by C05 (only if the trip is kept)
+| Q-011 | final platform for the public release, needed by C07, owner: user
+| Q-012 | first-load size target, measure in C03.2, owner: AI
+| Q-013 | Web payments and ads provider | C16 | AI + user
+| 	Q-014 | Web notifications: do or skip in v1 | C18 | user
+
 
 Closed in C01: Q-001 (see D-012), Q-002 (see D-013).
 
@@ -116,6 +130,7 @@ Closed in C01: Q-001 (see D-012), Q-002 (see D-013).
 - Decorations and island skins
 - Light PvE sea raids vs AI (old plan, cut from v1)
 - Run the GUT tests in CI (GitHub Actions)
+- Android and iOS apps from the same project (APK export still works)
 
 ## 10. ASSET LEDGER
 
@@ -123,7 +138,8 @@ Closed in C01: Q-001 (see D-012), Q-002 (see D-013).
 |---|---|---|---|---|---|
 | GUT 9.7.1 (plugin) | GitHub release | MIT | https://github.com/bitwes/Gut | 2026-11-06 | tests (`addons/gut/`) |
 | barichello/godot-ci 4.7.1 (Docker image) | Docker Hub / GitHub | MIT (as listed on a third-party summary page, check the repo LICENSE file) | https://github.com/abarichello/godot-ci | 2026-11-06 | CI build |
-| actions/checkout@v4, actions/upload-artifact@v4 | GitHub Actions | not checked yet (check in C18) | https://github.com/actions | 2026-11-06 | CI build |
+| actions/checkout@v4, actions/upload-artifact@v4 | GitHub Actions | not checked yet (check in C18) | GitHub Pages deploy actions, license check |https://github.com/actions | 2026-11-06 | CI build |
+
 
 ## 11. INSPIRATION LOG (ideas only, never code)
 

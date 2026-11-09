@@ -1,7 +1,7 @@
 # 03 DATA STARTER
 
-Version 1.0 | 2026-11-06 | Owner: Chat 00
-All numbers here are **v0 starter values**. They are tuned in C05 and C14. Each block below becomes a file in `data/`. Change numbers here first, then in the JSON file, then log it in `STATE.md` (DECISIONS).
+Version 1.2 | 2026-11-06 | Owner: Chat 00
+All numbers here are **v0 starter values**. They are tuned in C04, C05 and C07. Data for parked features (recipes §6, research §11, most of §9, explorer and trader boats in §8, reclaim) stays here for later (D-034). Each block below becomes a file in `data/`. Change numbers here first, then in the JSON file, then log it in `STATE.md` (DECISIONS).
 
 ---
 
@@ -36,6 +36,10 @@ remove_refund  = 50% of base coin cost
   "tile_px": 64,
   "camera_zoom_min": 0.6,
   "camera_zoom_max": 1.6,
+  "camera_margin_tiles": 2,
+  "tap_max_move_px": 20,
+  "water_tint_alpha_min": 0.25,
+  "water_tint_alpha_max": 0.55,
   "start_resources": {"coins": 300, "wood": 50, "food": 20, "stone": 0, "gems": 0},
   "order_slots_per_island": 3,
   "order_life_cycles": 2,
@@ -60,7 +64,7 @@ remove_refund  = 50% of base coin cost
   "LAND":    {"elevation": 4,  "color": "#7cc46a"}
 }
 ```
-Placeholder colors are for C03 (art comes in C17).
+Placeholder colors are for C03 (art comes in C17). Wet tiles get a blue tint overlay (D-027).
 
 ---
 
@@ -265,4 +269,9 @@ Legend: `~` DEEP, `s` SEABED, `r` REEF, `m` MUDFLAT, `h` SHORE, `L` LAND.
 ~~~~~~~~~~~~~~~~
 ```
 
+File shape: {"id": "home_isle", "width": 16, "height": 16, "legend": {"~":"DEEP","s":"SEABED","r":"REEF","m":"MUDFLAT","h":"SHORE","L":"LAND"}, "rows": [16 strings of 16 characters], "start_harbor": {"x": 6, "y": 6}}
+
 Start state: Harbor Hall at (6,6) (3x3 on LAND). Land is limited on purpose. Mud and reef give extra space for stilt buildings. Reclaim (Harbor L5) grows land later.
+
+
+

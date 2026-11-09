@@ -1,13 +1,13 @@
 # TIDEBOUND: START HERE
 
-Version 1.0 | 2026-11-06 | Owner: Chat 00 (planning)
+Version 1.2 | 2026-11-06 | Owner: Chat 00 (planning)
 
 ## What this project is
 
-- **Game:** Tidebound. A mobile grid-builder. You build a floating-island city. The ocean tide changes your map every few hours.
+- **Game:** Tidebound. A web grid-builder (plays in the browser). You build a floating-island city. The ocean tide changes your map every few hours.
 - **One line:** "Your town is never finished, because the sea keeps changing what works."
-- **Platform:** Android first, iOS later.
-- **Engine:** Godot 4 (GDScript), 2D.
+- **Platform:** Web browser (phone and desktop). Android and iOS apps are parked for later (D-030).
+- **Engine:** Godot 4 (GDScript), 2D, exported to Web (HTML5 + WebAssembly).
 - **Team:** One solo developer. All code is written by AI in chats. Old laptop, so heavy work runs in the cloud (GitHub Actions, Codespaces).
 
 ## The files (this is the full "Core Pack")
@@ -18,7 +18,7 @@ Version 1.0 | 2026-11-06 | Owner: Chat 00 (planning)
 | `01_GAME_BIBLE.md` | All game rules and design | Only by decision |
 | `02_TECH_SPEC.md` | Architecture, formulas, tests, save format | Only by decision |
 | `03_DATA_STARTER.md` | All numbers and starter JSON data | Often (balance) |
-| `04_ROADMAP.md` | Milestones, 18 chats, tasks, "done when" | When plan changes |
+| `04_ROADMAP.md` | Milestones, 7 chats (fast-track web plan), tasks, "done when" | When plan changes |
 | `05_AI_RULES.md` | Rules the AI must follow in every chat | Rarely |
 | `06_ART_GUIDE.md` | Art and audio rules, AI art prompts | Rarely |
 | `07_HANDOFF_SYSTEM.md` | How memory moves between chats | Rarely |
@@ -44,7 +44,7 @@ A fact lives in **one file only**. Other files point to it. Never copy it.
 5. **Data in JSON, not in code.** Costs, times, and stats live in `data/*.json`.
 6. **No guessing.** If the AI is unsure about a Godot API or a rule, it says so and asks.
 7. **Clean-room only.** We never copy code, art, or UI from other games. We write our own rules from our own notes.
-8. **Mobile first.** Test on a real phone often.
+8. **Browser first.** Test the web build on a real phone browser and a laptop browser often.
 9. **Every chat ends with a handoff.** Updated `STATE.md` is mandatory.
 10. **Fun check before more features.** Milestone M1 must feel fun before we build further.
 

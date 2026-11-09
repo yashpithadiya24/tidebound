@@ -1,6 +1,6 @@
 # 02 TECH SPEC
 
-Version 1.3 | 2026-11-06 | Owner: Chat 00
+Version 1.6 | 2026-11-06 | Owner: Chat 00
 Game rules are in `01`. Numbers are in `03`. This file says **how** we build it.
 
 ---
@@ -11,16 +11,18 @@ Game rules are in `01`. Numbers are in `03`. This file says **how** we build it.
 |---|---|
 | Engine | Godot 4.3 or newer (lock the exact version in `STATE.md` during C01) |
 | Language | GDScript with static typing |
-| Renderer | **Compatibility** (best reach on cheap Android phones). Revisit only if a needed effect fails. |
-| Textures | Project Setting **Import ETC2 ASTC** must be ON. Android export fails without it (D-015). |
-| Display | Portrait, base size 1080 x 1920, stretch mode `canvas_items`, aspect `expand` |
+| Renderer | **Compatibility** (works in the browser with WebGL 2 and on cheap phones). Revisit only if a needed effect fails. |
+| Textures | Project Setting **Import ETC2 ASTC** must be ON. Android export fails without it (D-015). For Web, also check "Import S3TC BPTC" for desktop browsers (confirm in C03.0). |
+| Display | Portrait, base size 1080 x 1920, stretch mode `canvas_items`, aspect `expand`. On Web a custom HTML page keeps the game a centered portrait column (built in C03.0). |
 | Tiles | `TileMapLayer` (not the old `TileMap`). Tile size 64 x 64 px. |
 | Tests | GUT 9.x (Godot Unit Test) |
 | Version control | Git + GitHub. Branch `main` always works. Feature branch per chat: `c05-production`. |
-| Build | GitHub Actions exports a debug APK (use a community Godot CI image, verify the current one in C01) |
+| Build | GitHub Actions exports the Web build and deploys it (see §16). The debug APK job is manual only (D-031). |
 | Cloud dev | GitHub Codespaces for scripts, docs, lint. Godot editor stays on the local laptop. |
-| Min Android | API 24 (Android 7). Target latest required by Google Play (check in C18). |
+| Browsers | Latest Chrome, Edge, Firefox, Safari on desktop, plus Chrome on Android and Safari on iOS. Needs WebGL 2. Exact minimum versions are set in C03.0. |
 | Package id | `com.yash.tidebound` (set in C01, D-013) |
+| Web export | Single-thread export (preset option Variant > Thread Support off). `user://` is stored in the browser (IndexedDB). `emulate_mouse_from_touch` stays on (default). The test site gets a debug build. The public release is a release build (D-034). |
+
 
 ---
 
@@ -37,7 +39,7 @@ tidebound/
 │   ├── map/              (SeaMap.tscn)
 │   └── ui/               (Hud, BuildMenu, CrewScreen, Orders, Shop, Settings ...)
 ├── scripts/
-│   ├── core/             (autoloads: Clock, EventBus, Data, Save, Game)
+│   ├── core/             (autoloads, Log.gd, Main.gd)
 │   ├── tide/             (TideModel.gd, Tide.gd)
 │   ├── grid/             (GridModel.gd, IslandData.gd, Placement.gd)
 │   ├── buildings/        (BuildingModel.gd, ProductionSystem.gd, BuilderQueue.gd)
@@ -47,7 +49,8 @@ tidebound/
 │   ├── progression/      (Harbor.gd, Research.gd, Reclaim.gd)
 │   ├── events/           (EventSystem.gd)
 │   ├── social/           (ShareCode.gd, Challenge.gd)
-│   └── debug/            (DebugPanel.gd)
+│   ├── debug/            (DebugPanel.gd)
+│   └── ui/               (scripts of scenes: IslandView, IslandCamera, TideWidget ...)
 ├── tests/                (GUT tests, mirror scripts/ names: test_tide_model.gd)
 ├── assets/               (art, audio, fonts; see 06)
 └── addons/               (gut, plugins)
@@ -81,6 +84,7 @@ Clock.now() -> int      # unix seconds UTC
 - `Clock.now()` = system unix time + `debug_offset` (offset works **only in debug builds**).
 - **Backward guard:** `Save` stores `last_seen_at`. If `now < last_seen_at`, use `last_seen_at` as now and keep it until real time catches up.
 - **Offline cap:** progress after load counts at most 48 h (`tuning.offline_cap_s`).
+- **Hidden tab:** browsers slow down timers in a background tab. This is safe because all game time uses timestamps. When the tab is visible again, run one catch-up and one `Tide.refresh()`.
 - Debug panel must have: +1 h, Next phase (jumps to the exact next phase boundary), +6 h, reset offset (also clears the backward guard), set event override (none, spring, super low). **Time travel is how we test tides.**
 
 ---
@@ -147,7 +151,7 @@ Walk the 5400-second segments between `t0` and `t1`. For each segment, get the i
 - Islands load from `data/islands/<id>.json` using an ASCII map (see `03`).
 - Footprint check: all tiles of a footprint must be inside the grid, empty, and match the building's `placement` kind.
 - Rendering: one `TileMapLayer` for terrain, one for water tint overlay, building nodes as `Node2D` sprites sorted by y. Water tint and tile variants update only on `tide_phase_changed` and on a slow visual tween.
-- Camera: drag to pan, pinch to zoom (min 0.6, max 1.6), clamped to island bounds plus margin.
+- Camera: drag to pan, pinch (touch) or mouse wheel (desktop) to zoom (min 0.6, max 1.6), clamped to island bounds plus margin.
 - Input: tap selects, long-press (0.4 s) or Move button starts move mode. Placement uses a ghost with green/red validity.
 
 ---
@@ -199,9 +203,9 @@ time = base_s / (boat.speed * speed_mult * (1 + sum(crew_boat_speed_bonus)))
 
 ## 10. Save system
 
-- File: `user://save.json`, backup `user://save.bak.json`.
+File: `user://save.json`, backup `user://save.bak.json`. On Web this is stored in the browser, so it can be lost if the player clears site data or uses private mode (confirm in C03.0). The game offers **Export save** and **Import save** (a text code) from C06 (D-032).
 - **Atomic write:** write `save.tmp.json`, then rename over `save.json`. Keep the previous file as `.bak`.
-- Save on: every state change after 2 s debounce, app pause, app quit.
+File: `user://save.json`, backup `user://save.bak.json`. On Web this is stored in the browser, so it can be lost if the player clears site data or uses private mode (confirm in C03.0). The game offers **Export save** and **Import save** (a text code) from C06 (D-032).
 - Root keys: `save_version` (int), `created_at`, `last_seen_at`, `resources`, `buildings`, `builders`, `tiles_changed`, `boats`, `trips`, `crew`, `research`, `orders_state`, `island_rep`, `events_seen`, `settings`, `ftue_step`, `flags`.
 - **Migrations:** `Save.migrate(data)` upgrades one version at a time. Every change of save shape bumps `save_version` and adds a migration plus a test with an old sample file in `tests/fixtures/`.
 - If load fails: try backup, then show a clear message. Never crash silently.
@@ -213,7 +217,7 @@ Sample (shortened):
   "last_seen_at": 1700000000,
   "resources": {"coins": 300, "wood": 50, "food": 20, "stone": 0, "gems": 0},
   "buildings": [
-    {"uid": 1, "id": "harbor_hall", "level": 1, "x": 7, "y": 7, "last_collect_at": 0, "stored": 0, "crew_id": ""}
+    {"uid": 1, "id": "harbor_hall", "level": 1, "x": 6, "y": 6, "last_collect_at": 0, "stored": 0, "crew_id": ""}
   ],
   "builders": [{"busy_uid": 0, "ready_at": 0}],
   "crew": [{"id": "captain", "level": 1, "rarity": "common", "shards": 0, "assigned_uid": 0, "active_used_cycle": -1}],
@@ -236,8 +240,8 @@ Sample (shortened):
 
 | Item | Target |
 |---|---|
-| Frame rate | 60 FPS on a mid Android phone (4 GB RAM), 30 FPS minimum on low-end |
-| APK size | Under 80 MB for v1 |
+| Frame rate | 60 FPS in a laptop browser and a mid phone browser (4 GB RAM), 30 FPS minimum on low-end |	
+| Download size | Under 80 MB total for v1. The first-load target is set in C03.0 after we measure the empty project. |
 | Draw calls | Under 150 on the home screen |
 | Memory | Under 400 MB |
 | Rules | Texture atlases. No per-frame allocations. No `get_node` in `_process`. Pool floating numbers. |
@@ -264,13 +268,13 @@ Sample (shortened):
 ## 15. Security and anti-cheat (v1 level)
 
 - Local game: clock changes can only cheat yourself. We keep the backward guard and offline cap.
-- Leaderboard (C15): submit scores with a seed and a replayable route so the server can verify. Do not trust raw scores.
-- No secrets in the repo. Use GitHub Secrets for keystores and keys.
+- Leaderboard: parked (D-034). If it returns, submit scores with a seed and a replayable route so the server can verify. Do not trust raw scores.
+- No secrets in the repo. Use GitHub Secrets for deploy tokens and keys. Nothing secret can live inside a web build: anything in the browser can be read.
 
 ---
 
 ## 16. Build and release
 
-- Debug APK on every push to any branch, plus a manual "Run workflow" button (artifact download). See D-014.
-- Release (C18): signed AAB, keystore in GitHub Secrets, versionCode increments automatically.
+- Web build on every push to any branch (artifact download). Pushes to `main` also deploy to the test site. Manual "Run workflow" button stays. The debug APK job is manual only. See D-031.
+- Release (C18): Web release export (no debug panel) deployed to the live site. The signed AAB is parked with the Android plan (D-030).
 - Version format: `0.<milestone>.<chat>` during development (example `0.1.05`).

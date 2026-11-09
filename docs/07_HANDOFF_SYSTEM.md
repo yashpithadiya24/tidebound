@@ -1,6 +1,6 @@
 # 07 HANDOFF SYSTEM
 
-Version 1.0 | 2026-11-06 | Owner: Chat 00
+Version 1.1 | 2026-11-06 | Owner: Chat 00
 Goal: every new chat starts with the same knowledge and the same quality as the last one.
 
 ---
@@ -45,10 +45,10 @@ Attach **only** what is needed. Smaller context means better answers.
 | Chat type | Always attach | Also attach |
 |---|---|---|
 | Any chat | `00`, `STATE.md`, `05` | The block of this chat from `04` |
-| Logic and systems (C02, C04, C05, C08, C09, C12 to C15) | above | `02`, the needed part of `03`, repo map, files to edit |
+| Logic and systems (C02, C04, C05) | above | `02`, the needed part of `03`, repo map, files to edit |
 | Game design and balance | above | `01`, `03` |
-| UI (C03 UI parts, C06, C07, C11) | above | `02` §11, `06`, screenshots |
-| Art and audio (C17) | above | `06`, `01` §16 |
+| UI (C03, C06, C07) | above | `02` §11, `06`, screenshots |
+| Art and audio (C06) | above | `06`, `01` §16 |
 | Bug fix | `STATE.md`, `05` | Error text, failing file, repo map |
 | Planning or changing rules | all files | - |
 

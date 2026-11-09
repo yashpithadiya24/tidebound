@@ -33,6 +33,7 @@ These rules apply to **every chat**. The AI must follow them without being remin
 | Godot version | Use only Godot 4.3+ APIs (`TileMapLayer`, `await`, typed arrays). No Godot 3 code (`yield`, `onready` without `@`, `TileMap` layers). |
 | Errors | Check for null and missing ids. Log with `Log.warn`. Never crash on bad data. |
 | Performance | No allocation in `_process`. No `get_node` in loops. Use atlases. |
+| Web | Use only features Godot Web supports (check the docs): no threads, no native plugins, no GDExtension, no `OS.execute`. Keep file reads inside `res://` and `user://`. |
 | Tests | Every pure-logic class gets a GUT test file `tests/test_<class>.gd`. |
 | Dependencies | Do not add plugins or libraries without asking and logging a decision. |
 
@@ -54,7 +55,7 @@ These rules apply to **every chat**. The AI must follow them without being remin
 
 - [ ] Code follows these rules
 - [ ] GUT test added and passing (for logic)
-- [ ] Runs on the phone (for visible things)
+- [ ] Runs in the web build in a browser (for visible things). Touch things are checked in a phone browser.	
 - [ ] No new warnings in the Godot output
 - [ ] Data changes also updated in `03_DATA_STARTER.md`
 - [ ] Commit made

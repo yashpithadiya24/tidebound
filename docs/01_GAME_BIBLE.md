@@ -1,8 +1,9 @@
 # 01 GAME BIBLE
 
-Version 1.1 | 2026-11-07 | Owner: Chat 00
+Version 1.3 | 2026-11-07 | Owner: Chat 00
 Numbers are in `03_DATA_STARTER.md`. Formulas are in `02_TECH_SPEC.md`. Rule IDs (like R-TIDE-1) can be quoted in chats.
 
+**Scope note (D-034):** v1 ships in chats C01 to C07. Parked (kept for later, not built in v1): events and seasons (§9), social (§10), gems and ads (§11), the tech tree and Harbor L6 to L10 (§8), land reclaim (§5), crew active skills and shards (§7), and most of the sea map (§6). Only one simple Skiff trip stays (see 04, C05).
 ---
 
 ## 1. Vision and pillars
@@ -17,7 +18,7 @@ Numbers are in `03_DATA_STARTER.md`. Formulas are in `02_TECH_SPEC.md`. Rule IDs
 | P4 Return at the right time | The tide clock gives players a reason to come back 3 to 5 times a day. |
 | P5 Collect and grow | Crew, islands, and tech give long-term goals. |
 
-**Audience:** Casual to mid-core mobile players who like Hay Day, Township, and Clash-style base building. Sessions of 2 to 5 minutes, 3 to 5 times a day.
+**Audience:** Casual to mid-core browser players (phone and desktop) who like Hay Day, Township, and Clash-style base building. Sessions of 2 to 5 minutes, 3 to 5 times a day.
 
 ---
 
@@ -191,7 +192,7 @@ Rules: first builds are very fast (10 to 30 s). Skip is allowed. No forced waiti
 - **Sea map:** graph, lanes colored by open/closed now, boat positions, send-boat panel.
 - **Orders board:** per island, cargo loader.
 - **Research, Shop, Settings, Weekly challenge.**
-- **Rules:** portrait only. Thumb-friendly: main buttons in the bottom 40%. Min touch target 48 dp. Never more than 3 taps to start a common action. All tide info uses **icon + color + text** (color-blind safe).
+- **Rules:** portrait layout (a centered tall column on desktop). Thumb-friendly: main buttons in the bottom 40% of the screen. Min touch target 48 px on the real screen. Mouse and touch both work.Never more than 3 taps to start a common action. All tide info uses **icon + color + text** (color-blind safe).
 
 ---
 
@@ -208,8 +209,7 @@ Rules: first builds are very fast (10 to 30 s). Skip is allowed. No forced waiti
 
 ## 15. Out of scope for v1
 
-PvP raids, base defense, guilds, live chat, 3D graphics, cloud-gaming features, multiple languages (English only, but keep strings in one file), tablet layouts, web version.
-
+PvP raids, base defense, guilds, live chat, 3D graphics, cloud-gaming features, multiple languages (English only, but keep strings in one file), tablet-specific layouts, native Android and iOS apps (parked, D-030).		
 ---
 
 ## 16. Naming and identity
