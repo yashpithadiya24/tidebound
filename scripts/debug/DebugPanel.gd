@@ -118,8 +118,8 @@ func _on_tide_changed(_phase: String, _index: int) -> void:
 func _update_text() -> void:
 	if _header == null:
 		return
-		_header.text = "TIDE %s | idx %d | next in %s | %d FPS" % [
-			Tide.current_phase(), Tide.current_index(), _format_time(Tide.seconds_to_next()),
+	_header.text = "TIDE %s | idx %d | next in %s | %d FPS" % [
+	   	Tide.current_phase(), Tide.current_index(), _format_time(Tide.seconds_to_next()),
 			int(Engine.get_frames_per_second())
 		]
 	if _body.visible:
