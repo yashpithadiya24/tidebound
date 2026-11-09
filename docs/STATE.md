@@ -99,6 +99,8 @@ Update this file at the end of **every** chat. It is the first thing every new c
 | D-032 | 2026-11-07 | Browser storage (`user://`) holds the save. C06 adds Export save and Import save (text code) and a Settings warning. | Players can clear site data or use private mode | 02 §10, 04 C06 | - |
 | D-033 | 2026-11-07 | Test site on GitHub Pages. First public release on itch.io. Domain, web payments, ads and web notifications are decided later (C16, C18). | Fastest free path | 04, STATE | - |
 | D-034 | 2026-11-07 | Fast-track web plan. The roadmap shrinks from C01-C18 to C01-C07. Cut: IAP, ad SDKs, push notifications, store listing, signed AAB, leaderboard, share codes, weekly challenge, seasons, events, tech tree, power, workshop recipes, land reclaim, crew active skills, shards, full sea map (see 04 "Parked"). C03 is two steps: C03.1 (data and tests) and C03.2 (web pipeline, island view, camera, tide tint, widget). Web export is single-threaded. The test site gets a debug web build. The public release goes to an online web-game platform (itch.io first, final choice is Q-011). GitHub Pages stays as the test link. `emulate_mouse_from_touch` stays at its default (on). | Publish fast. A web link replaces APK installs. | 00, 01, 02, 03, 04, 06, 07 | D-008 (chat count), D-010, D-029 part (c). D-033 is updated for the platform choice. |
+| D-035 | 2026-11-08 | No tide damage, no repair mechanic, no loss state. Pause-not-lose (R-TIDE-6, R-BLD-3) stays as the only tide rule for production. | Damage was never in the design. It breaks pillar P2 and the fairness rules (01 §14). The user left the choice to the AI. | none (04 C04 and C05 already follow this) | - |
+
 
 ## 7. OPEN QUESTIONS
 
